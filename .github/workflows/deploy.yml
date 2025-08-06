@@ -3,32 +3,35 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # 每次 push main 自动触发
+      - main # 监听源码仓库的 main 分支
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Install Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18 # 你项目所需的 Node.js 版本
           cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build project
-        run: pnpm build
+      - name: Build
+        run: pnpm run build
 
-      - name: Deploy to GitHub Pages repo
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.DEPLOY_TOKEN }}
           external_repository: DarkNightWalker/DarkNightWalker.github.io
-          publish_branch: main
-          publish_dir: ./dist
+          publish_dir: dist
+          publish_branch: main # 目标部署仓库的分支，一般是 main
