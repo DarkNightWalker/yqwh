@@ -45,21 +45,31 @@ onMounted(() => {
 <template>
   <div class="container">
     <div class="header">
-      <h1>我们的纪念日</h1>
+      <div class="cupid-header">
+        <span class="cupid">💘</span>
+        <h1>我们的纪念日</h1>
+        <span class="cupid">💘</span>
+      </div>
       <div class="hearts">
         <span class="heart">❤️</span>
         <span class="heart">💖</span>
         <span class="heart">💗</span>
+        <span class="heart">💓</span>
+        <span class="heart">💞</span>
       </div>
     </div>
     
     <div class="card warm-card">
+      <div class="cupid-corner cupid-corner-left">🏹</div>
+      <div class="cupid-corner cupid-corner-right">💘</div>
       <h2>在一起的时光</h2>
       <div class="days-count">{{ daysTogether }} 天</div>
       <p>从 {{ anniversaryDate.toLocaleDateString('zh-CN') }} 开始，我们已经一起走过了 {{ daysTogether }} 个美好的日子</p>
     </div>
     
     <div class="card accent-card yellow">
+      <div class="cupid-corner cupid-corner-left">💕</div>
+      <div class="cupid-corner cupid-corner-right">💖</div>
       <h2>下一个纪念日</h2>
       <div class="days-count">{{ daysToNext }} 天</div>
       <p>距离下一个纪念日 ({{ nextAnniversary }}) 还有 {{ daysToNext }} 天</p>
@@ -67,18 +77,32 @@ onMounted(() => {
     
     <div class="memories">
       <div class="card accent-card green">
+        <div class="cupid-corner cupid-corner-left">💚</div>
+        <div class="cupid-corner cupid-corner-right">💝</div>
         <h3>美好回忆</h3>
         <p>一起看过的日落、一起走过的街道、一起吃过的美食...</p>
       </div>
       
       <div class="card accent-card blue">
+        <div class="cupid-corner cupid-corner-left">💙</div>
+        <div class="cupid-corner cupid-corner-right">🥰</div>
         <h3>未来憧憬</h3>
         <p>一起旅行、一起看雪、一起变老...</p>
       </div>
     </div>
     
     <div class="quote">
+      <div class="cupid-quote">💘</div>
       <p>"爱是恒久忍耐，又有恩慈；爱是不嫉妒，爱是不自夸，不张狂"</p>
+      <div class="cupid-quote">💘</div>
+    </div>
+    
+    <div class="floating-hearts">
+      <div class="floating-heart">💘</div>
+      <div class="floating-heart">❤️</div>
+      <div class="floating-heart">💖</div>
+      <div class="floating-heart">💗</div>
+      <div class="floating-heart">💕</div>
     </div>
   </div>
 </template>
@@ -89,6 +113,8 @@ onMounted(() => {
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Arial', sans-serif;
+  position: relative;
+  overflow: hidden;
 }
 
 .header {
@@ -96,10 +122,17 @@ onMounted(() => {
   margin-bottom: 2rem;
 }
 
-.header h1 {
+.cupid-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cupid-header h1 {
   color: #d46a6a;
   font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin: 0;
 }
 
 .hearts {
@@ -107,6 +140,7 @@ onMounted(() => {
   justify-content: center;
   gap: 1rem;
   font-size: 1.5rem;
+  margin-top: 1rem;
 }
 
 .card {
@@ -115,6 +149,8 @@ onMounted(() => {
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .card:hover {
@@ -163,6 +199,98 @@ onMounted(() => {
   margin-top: 2rem;
   padding: 1rem;
   border-top: 2px dashed #ffd6d6;
+  position: relative;
+}
+
+.cupid-corner {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+.cupid-corner-left {
+  top: 10px;
+  left: 10px;
+}
+
+.cupid-corner-right {
+  top: 10px;
+  right: 10px;
+}
+
+.cupid-quote {
+  display: inline-block;
+  margin: 0 0.5rem;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.floating-hearts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.floating-heart {
+  position: absolute;
+  font-size: 1.5rem;
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-heart:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s;
+  top: -10%;
+}
+
+.floating-heart:nth-child(2) {
+  left: 20%;
+  animation-delay: 1s;
+  top: -10%;
+}
+
+.floating-heart:nth-child(3) {
+  left: 30%;
+  animation-delay: 2s;
+  top: -10%;
+}
+
+.floating-heart:nth-child(4) {
+  left: 70%;
+  animation-delay: 3s;
+  top: -10%;
+}
+
+.floating-heart:nth-child(5) {
+  left: 80%;
+  animation-delay: 4s;
+  top: -10%;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -174,12 +302,16 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
   
-  .header h1 {
+  .cupid-header h1 {
     font-size: 2rem;
   }
   
   .days-count {
     font-size: 2rem;
+  }
+  
+  .floating-hearts {
+    display: none;
   }
 }
 </style>
