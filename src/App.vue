@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 // 纪念日日期 (可以修改为你们的实际纪念日)
 const anniversaryDate = new Date('2023-06-15')
@@ -76,18 +77,22 @@ onMounted(() => {
     </div>
     
     <div class="memories">
-      <div class="card accent-card green">
+      <!-- 美好回忆卡片 -->
+      <div class="card accent-card green memory-card" @click="$router.push('/memories')">
         <div class="cupid-corner cupid-corner-left">💚</div>
         <div class="cupid-corner cupid-corner-right">💝</div>
         <h3>美好回忆</h3>
         <p>一起看过的日落、一起走过的街道、一起吃过的美食...</p>
+        <div class="click-hint">点击查看详情 💖</div>
       </div>
       
-      <div class="card accent-card blue">
+      <!-- 未来憧憬卡片 -->
+      <div class="card accent-card blue future-card" @click="$router.push('/future')">
         <div class="cupid-corner cupid-corner-left">💙</div>
         <div class="cupid-corner cupid-corner-right">🥰</div>
         <h3>未来憧憬</h3>
         <p>一起旅行、一起看雪、一起变老...</p>
+        <div class="click-hint">点击查看详情 💖</div>
       </div>
     </div>
     
@@ -151,6 +156,7 @@ onMounted(() => {
   transition: transform 0.3s ease;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .card:hover {
@@ -291,6 +297,13 @@ onMounted(() => {
     transform: translateY(100vh) rotate(360deg);
     opacity: 0;
   }
+}
+
+.click-hint {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
 
 @media (max-width: 768px) {
