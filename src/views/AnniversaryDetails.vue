@@ -1,182 +1,242 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
-// 定义props接收页面类型参数
-const props = defineProps<{
-  type: 'memories' | 'future'
-}>()
+interface Item { image: string; text: string }
 
-// 根据类型设置页面标题和内容
-const title = ref('')
-const items = ref<Array<{image: string, text: string}>>([])
+const props = defineProps<{ type: 'memories' | 'future' }>()
+const router = useRouter()
 
-if (props.type === 'memories') {
-  title.value = '美好回忆'
-  items.value = [
-    { 
-      image: new URL('../assets/memories1.jpg', import.meta.url).href, 
-      text: '这是我们第一次约会的地方，阳光正好，微风不燥。' 
-    },
-    { 
-      image: new URL('../assets/memories2.jpg', import.meta.url).href, 
-      text: '一起看日落的黄昏，你的笑容比夕阳更美。' 
-    },
-    { 
-      image: new URL('../assets/memories3.jpg', import.meta.url).href, 
-      text: '在海边留下的足迹，就像我们爱情的印记。' 
-    }
-  ]
-} else {
-  title.value = '未来憧憬'
-  items.value = [
-    { 
-      image: new URL('../assets/future1.jpg', import.meta.url).href, 
-      text: '希望有一天我们能一起去看极光。' 
-    },
-    { 
-      image: new URL('../assets/future2.jpg', import.meta.url).href, 
-      text: '梦想中的小家，和你一起装饰每一个角落。' 
-    },
-    { 
-      image: new URL('../assets/future3.jpg', import.meta.url).href, 
-      text: '一起变老，坐在摇椅上回忆这一生的美好。' 
-    }
-  ]
-}
+const title = computed(() => (props.type === 'memories' ? '美好回忆' : '未来憧憬'))
 
-// 返回首页的方法
-const goBack = () => {
-  window.history.back()
-}
+const items = computed<Item[]>(() =>
+    props.type === 'memories'
+        ? [
+          { image: '/src/assets/memories1.jpg', text: '第一次约会，那天阳光刚刚好。' },
+          { image: '/src/assets/memories2.jpg', text: '日落下的你，比夕阳更温柔。' },
+          { image: '/src/assets/memories3.jpg', text: '海浪记录的脚印，也是我们的印记。' }
+        ]
+        : [
+          { image: '/src/assets/future1.jpg', text: '想牵着你看一次极光漫天。' },
+          { image: '/src/assets/future2.jpg', text: '一起把家装满喜欢的颜色。' },
+          { image: '/src/assets/future3.jpg', text: '等白发苍苍，还一起荡秋千。' }
+        ]
+)
+
+const activeIndex = ref(0)
+const next = () => (activeIndex.value = (activeIndex.value + 1) % items.value.length)
+const prev = () => (activeIndex.value = (activeIndex.value - 1 + items.value.length) % items.value.length)
 </script>
 
 <template>
-  <div class="details-container">
-    <div class="header">
-      <button @click="goBack" class="back-button">← 返回</button>
-      <h1>{{ title }}</h1>
-    </div>
-    
-    <div class="items-container">
-      <div 
-        v-for="(item, index) in items" 
-        :key="index" 
-        class="item-card"
-      >
-        <div class="image-container">
-          <img 
-            :src="item.image" 
-            :alt="title + '图片' + (index + 1)"
-            class="item-image"
-          >
+  <div class="stage">
+    <!-- 背景渐变色会随 type 切换 -->
+    <div :class="['bg', type]" />
+
+    <!-- 顶部返回 -->
+    <button class="back" @click="router.back()">
+      <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" /></svg>
+      返回
+    </button>
+
+    <!-- 主标题 -->
+    <h1 class="title">{{ title }}</h1>
+
+    <!-- 轮播区域 -->
+    <div class="carousel">
+      <transition name="fade" mode="out-in">
+        <div :key="activeIndex" class="slide">
+          <img :src="items[activeIndex].image" />
+          <p class="caption">{{ items[activeIndex].text }}</p>
         </div>
-        <div class="item-text">
-          {{ item.text }}
-        </div>
+      </transition>
+
+      <!-- 左右箭头 -->
+      <button class="nav prev" @click="prev">‹</button>
+      <button class="nav next" @click="next">›</button>
+
+      <!-- 小圆点 -->
+      <div class="dots">
+        <span
+            v-for="(_, i) in items"
+            :key="i"
+            :class="{ active: i === activeIndex }"
+            @click="activeIndex = i"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.details-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Arial', sans-serif;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-.header h1 {
-  color: #d46a6a;
-  font-size: 2rem;
-  margin: 0;
-}
-
-.back-button {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #fff0f0;
-  border: 1px solid #d46a6a;
-  color: #d46a6a;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.back-button:hover {
-  background: #d46a6a;
-  color: white;
-}
-
-.items-container {
+/* 全屏舞台 */
+.stage {
+  position: fixed;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-}
-
-.item-card {
-  border-radius: 15px;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'PingFang SC', 'Helvetica Neue', sans-serif;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  background: white;
 }
 
-.item-card:hover {
-  transform: translateY(-5px);
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  transition: background 1.2s ease;
+}
+.bg.memories {
+  background: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%);
+}
+.bg.future {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
 }
 
-.image-container {
+/* 返回按钮 */
+.back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background 0.3s;
+}
+.back:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+.back svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* 标题 */
+.title {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0 0 32px;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 轮播 */
+.carousel {
+  position: relative;
+  width: 340px;
+  height: 480px;
+  perspective: 1000px;
+}
+.slide {
   width: 100%;
-  height: 300px;
+  height: 100%;
+  border-radius: 20px;
   overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
-
-.item-image {
+.slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  display: block;
 }
-
-.item-card:hover .item-image {
-  transform: scale(1.05);
-}
-
-.item-text {
-  padding: 1.5rem;
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+  font-size: 16px;
   text-align: center;
-  font-size: 1.1rem;
-  color: #5a4a4a;
-  background: linear-gradient(to bottom, #fff9f9, #fff0f0);
+  line-height: 1.4;
+  letter-spacing: 0.5px;
 }
 
-@media (max-width: 768px) {
-  .details-container {
-    padding: 1rem;
+/* 导航箭头 */
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background 0.3s;
+  z-index: 2;
+}
+.nav:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+.prev {
+  left: -60px;
+}
+.next {
+  right: -60px;
+}
+
+/* 小圆点 */
+.dots {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+.dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+}
+.dots span.active {
+  background: #fff;
+  transform: scale(1.4);
+}
+
+/* 轮播动画 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+  .carousel {
+    width: 280px;
+    height: 400px;
   }
-  
-  .header h1 {
-    font-size: 1.5rem;
+  .prev {
+    left: -50px;
   }
-  
-  .image-container {
-    height: 200px;
-  }
-  
-  .item-text {
-    padding: 1rem;
-    font-size: 1rem;
+  .next {
+    right: -50px;
   }
 }
 </style>

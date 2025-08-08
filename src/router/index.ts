@@ -1,23 +1,23 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import App from '../App.vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Home from '../views/Home.vue'
 import AnniversaryDetails from '../views/AnniversaryDetails.vue'
 
 const routes = [
-  { path: '/', component: App },
-  { 
-    path: '/memories', 
+  { path: '/', component: Home },
+  {
+    path: '/memories',
     component: AnniversaryDetails,
     props: { type: 'memories' }
   },
-  { 
-    path: '/future', 
+  {
+    path: '/future',
     component: AnniversaryDetails,
     props: { type: 'future' }
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 
