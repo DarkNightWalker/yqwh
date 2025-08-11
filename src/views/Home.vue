@@ -247,49 +247,45 @@ onMounted(() => {
 }
 
 .floating-hearts {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: -1;
+  z-index: 9999;
 }
 
 .floating-heart {
   position: absolute;
   font-size: 1.5rem;
   animation: float 6s ease-in-out infinite;
+  top: -10%;
 }
-
+  
 .floating-heart:nth-child(1) {
   left: 10%;
   animation-delay: 0s;
-  top: -10%;
 }
 
 .floating-heart:nth-child(2) {
   left: 20%;
   animation-delay: 1s;
-  top: -10%;
 }
 
 .floating-heart:nth-child(3) {
   left: 30%;
   animation-delay: 2s;
-  top: -10%;
 }
 
 .floating-heart:nth-child(4) {
   left: 70%;
   animation-delay: 3s;
-  top: -10%;
 }
 
 .floating-heart:nth-child(5) {
   left: 80%;
   animation-delay: 4s;
-  top: -10%;
 }
 
 @keyframes float {
