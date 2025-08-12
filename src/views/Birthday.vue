@@ -7,7 +7,7 @@
       <h1 ref="title">🎂 Happy Birthday 🎂</h1>
       <h2 ref="subtitle">祝自己 2025 年的每一天都开心</h2>
       <h3 ref="name">—— 来自 自己 的祝福</h3>
-      <button class="home-btn" @click="goHome">去 Home</button>
+      <button class="home-btn" @click="goHome">Home</button>
     </div>
   </div>
 </template>
