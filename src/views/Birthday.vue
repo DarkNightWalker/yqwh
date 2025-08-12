@@ -19,7 +19,7 @@ import gsap from 'gsap'
 
 // ====== 配置（修改生日日期到你需要的月/日） ======
 const BIRTHDAY_MONTH_INDEX = 7 // 0=Jan, 7=Aug
-const BIRTHDAY_DAY = 12
+const BIRTHDAY_DAY = 14
 // ==============================================
 
 const title = ref<HTMLElement | null>(null)
