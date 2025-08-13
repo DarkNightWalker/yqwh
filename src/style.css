@@ -8,30 +8,22 @@ html, body, #app {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.5;
   color: #5a4a4a;
+  box-sizing: border-box;
 }
 
-a {
-  font-weight: 500;
-  color: #d46a6a;
-  text-decoration: none;
+/* 页面容器 */
+.page {
+  min-height: 100vh; /* 保证至少和视口一样高 */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* flex-start 避免垂直被压缩 */
+  padding: 2rem 1rem;    /* 内边距不会遮挡内容 */
+  box-sizing: border-box;
+  position: relative;
 }
 
-a:hover {
-  color: #b34d4d;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #fff0f0;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #d46a6a;
+/* 内部容器可自动撑开 */
+.container {
+  width: 100%;
+  max-width: 800px;
 }
