@@ -1,49 +1,3 @@
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-
-// 纪念日日期
-const anniversaryDate = new Date('2023-06-15')
-const router = useRouter()
-
-// 计算纪念日信息
-const daysTogether = ref(0)
-const nextAnniversary = ref('')
-const daysToNext = ref(0)
-
-const calculateDays = () => {
-  const today = new Date()
-  const start = new Date(anniversaryDate)
-
-  // 在一起多少天
-  const diffTime = Math.abs(today.getTime() - start.getTime())
-  daysTogether.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-
-  // 下一个纪念日
-  const currentYear = today.getFullYear()
-  let nextAnniv = new Date(currentYear, anniversaryDate.getMonth(), anniversaryDate.getDate())
-  if (nextAnniv < today) {
-    nextAnniv = new Date(currentYear + 1, anniversaryDate.getMonth(), anniversaryDate.getDate())
-  }
-  nextAnniversary.value = nextAnniv.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-
-  // 距离下一个纪念日多少天
-  const diffTimeNext = nextAnniv.getTime() - today.getTime()
-  daysToNext.value = Math.ceil(diffTimeNext / (1000 * 60 * 60 * 24))
-}
-
-const goToMemories = () => router.push('/memories')
-const goToFuture = () => router.push('/future')
-
-onMounted(() => {
-  calculateDays()
-})
-</script>
-
 <template>
   <div class="page">
     <div class="container">
@@ -113,31 +67,65 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
-/* 让背景全屏并居中内容 */
-html, body, #app {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const anniversaryDate = new Date('2023-06-15')
+const router = useRouter()
+
+const daysTogether = ref(0)
+const nextAnniversary = ref('')
+const daysToNext = ref(0)
+
+const calculateDays = () => {
+  const today = new Date()
+  const start = new Date(anniversaryDate)
+
+  // 在一起多少天
+  const diffTime = Math.abs(today.getTime() - start.getTime())
+  daysTogether.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+  // 下一个纪念日
+  const currentYear = today.getFullYear()
+  let nextAnniv = new Date(currentYear, anniversaryDate.getMonth(), anniversaryDate.getDate())
+  if (nextAnniv < today) nextAnniv = new Date(currentYear + 1, anniversaryDate.getMonth(), anniversaryDate.getDate())
+  nextAnniversary.value = nextAnniv.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+
+  // 距离下一个纪念日多少天
+  const diffTimeNext = nextAnniv.getTime() - today.getTime()
+  daysToNext.value = Math.ceil(diffTimeNext / (1000 * 60 * 60 * 24))
 }
 
+const goToMemories = () => router.push('/memories')
+const goToFuture = () => router.push('/future')
+
+onMounted(() => calculateDays())
+</script>
+
+<style scoped>
+/* page 全屏居中 */
 .page {
-  min-height: 100%;
   width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center;     /* 垂直居中 */
+  justify-content: center;
+  align-items: center;
   background: linear-gradient(180deg, #fff5e6, #ffe6e6);
-  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
 }
 
 .container {
   max-width: 800px;
-  width: 90%;
+  width: 100%;
   font-family: 'Arial', sans-serif;
-  text-align: center;
+  position: relative;
 }
-
 
 .header {
   text-align: center;
@@ -169,7 +157,7 @@ html, body, #app {
   border-radius: 15px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
   position: relative;
   overflow: hidden;
@@ -230,15 +218,8 @@ html, body, #app {
   opacity: 0.7;
 }
 
-.cupid-corner-left {
-  top: 10px;
-  left: 10px;
-}
-
-.cupid-corner-right {
-  top: 10px;
-  right: 10px;
-}
+.cupid-corner-left { top: 10px; left: 10px; }
+.cupid-corner-right { top: 10px; right: 10px; }
 
 .cupid-quote {
   display: inline-block;
@@ -282,12 +263,7 @@ html, body, #app {
   100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
-.click-hint {
-  text-align: center;
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  opacity: 0.9;
-}
+.click-hint { text-align:center; margin-top:1rem; font-size:0.9rem; opacity:0.9; }
 
 @media (max-width: 768px) {
   .memories { grid-template-columns: 1fr; }
