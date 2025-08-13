@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-// 静态导入图片，确保构建时被打包到 dist/assets
+// 静态导入图片
 import memories1 from '@/assets/memories1.jpg'
 import memories2 from '@/assets/memories2.jpg'
 import memories3 from '@/assets/memories3.jpg'
@@ -32,19 +32,14 @@ const items = computed<Item[]>(() =>
 )
 
 const activeIndex = ref(0)
-
-function next() {
-  activeIndex.value = (activeIndex.value + 1) % items.value.length
-}
-function prev() {
-  activeIndex.value = (activeIndex.value - 1 + items.value.length) % items.value.length
-}
+const next = () => (activeIndex.value = (activeIndex.value + 1) % items.value.length)
+const prev = () => (activeIndex.value = (activeIndex.value - 1 + items.value.length) % items.value.length)
 </script>
 
 <template>
   <div class="stage">
     <!-- 背景渐变色会随 type 切换 -->
-    <div :class="['bg', type]" />
+    <div :class="['bg', props.type]" />
 
     <!-- 顶部返回 -->
     <button class="back" @click="router.back()">
@@ -71,10 +66,10 @@ function prev() {
       <!-- 小圆点 -->
       <div class="dots">
         <span
-          v-for="(_, i) in items"
-          :key="i"
-          :class="{ active: i === activeIndex }"
-          @click="activeIndex = i"
+            v-for="(_, i) in items"
+            :key="i"
+            :class="{ active: i === activeIndex }"
+            @click="activeIndex = i"
         />
       </div>
     </div>
