@@ -115,22 +115,29 @@ onMounted(() => {
 
 <style scoped>
 /* 让背景全屏并居中内容 */
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .page {
-  min-height: 100vh;
+  min-height: 100%;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: flex-start; /* 如果想垂直居中改成 center */
+  justify-content: center; /* 水平居中 */
+  align-items: center;     /* 垂直居中 */
   background: linear-gradient(180deg, #fff5e6, #ffe6e6);
-  padding: 2rem 1rem;
   box-sizing: border-box;
 }
 
 .container {
   max-width: 800px;
-  width: 100%;
+  width: 90%;
   font-family: 'Arial', sans-serif;
-  position: relative;
+  text-align: center;
 }
+
 
 .header {
   text-align: center;
