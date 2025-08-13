@@ -54,7 +54,7 @@ const prev = () => (activeIndex.value = (activeIndex.value - 1 + items.value.len
     <div class="carousel">
       <transition name="fade" mode="out-in">
         <div :key="activeIndex" class="slide">
-          <img :src="items[activeIndex].image" />
+          <img :src="items[activeIndex].image" alt="" />
           <p class="caption">{{ items[activeIndex].text }}</p>
         </div>
       </transition>
