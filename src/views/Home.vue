@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-// 纪念日日期 (可以修改为你们的实际纪念日)
+// 纪念日日期
 const anniversaryDate = new Date('2023-06-15')
 const router = useRouter()
 
@@ -15,39 +15,29 @@ const calculateDays = () => {
   const today = new Date()
   const start = new Date(anniversaryDate)
 
-  // 计算在一起多少天
+  // 在一起多少天
   const diffTime = Math.abs(today.getTime() - start.getTime())
   daysTogether.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 
-  // 计算下一个纪念日
+  // 下一个纪念日
   const currentYear = today.getFullYear()
   let nextAnniv = new Date(currentYear, anniversaryDate.getMonth(), anniversaryDate.getDate())
-
-  // 如果今年的纪念日已经过了，则计算明年的
   if (nextAnniv < today) {
     nextAnniv = new Date(currentYear + 1, anniversaryDate.getMonth(), anniversaryDate.getDate())
   }
-
   nextAnniversary.value = nextAnniv.toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   })
 
-  // 计算距离下一个纪念日还有多少天
+  // 距离下一个纪念日多少天
   const diffTimeNext = nextAnniv.getTime() - today.getTime()
   daysToNext.value = Math.ceil(diffTimeNext / (1000 * 60 * 60 * 24))
 }
 
-// 跳转到回忆页面
-const goToMemories = () => {
-  router.push('/memories')
-}
-
-// 跳转到未来页面
-const goToFuture = () => {
-  router.push('/future')
-}
+const goToMemories = () => router.push('/memories')
+const goToFuture = () => router.push('/future')
 
 onMounted(() => {
   calculateDays()
@@ -55,61 +45,62 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container">
-    <div class="header">
-      <div class="cupid-header">
-        <span class="cupid">💘</span>
-        <h1>我们的纪念日</h1>
-        <span class="cupid">💘</span>
-      </div>
-      <div class="hearts">
-        <span class="heart">❤️</span>
-        <span class="heart">💖</span>
-        <span class="heart">💗</span>
-        <span class="heart">💓</span>
-        <span class="heart">💞</span>
-      </div>
-    </div>
-    <div class="card warm-card">
-      <div class="cupid-corner cupid-corner-left">🏹</div>
-      <div class="cupid-corner cupid-corner-right">💘</div>
-      <h2>在一起的时光</h2>
-      <div class="days-count">{{ daysTogether }} 天</div>
-      <p>从 {{ anniversaryDate.toLocaleDateString('zh-CN') }} 开始，我们已经一起走过了 {{ daysTogether }} 个美好的日子</p>
-    </div>
-
-    <div class="card accent-card yellow">
-      <div class="cupid-corner cupid-corner-left">💕</div>
-      <div class="cupid-corner cupid-corner-right">💖</div>
-      <h2>下一个纪念日</h2>
-      <div class="days-count">{{ daysToNext }} 天</div>
-      <p>距离下一个纪念日 ({{ nextAnniversary }}) 还有 {{ daysToNext }} 天</p>
-    </div>
-
-    <div class="memories">
-      <!-- 美好回忆卡片 -->
-      <div class="card accent-card green memory-card" @click="goToMemories">
-        <div class="cupid-corner cupid-corner-left">💚</div>
-        <div class="cupid-corner cupid-corner-right">💝</div>
-        <h3>美好回忆</h3>
-        <p>一起看过的日落、一起走过的街道、一起吃过的美食...</p>
-        <div class="click-hint">点击查看详情 💖</div>
+  <div class="page">
+    <div class="container">
+      <div class="header">
+        <div class="cupid-header">
+          <span class="cupid">💘</span>
+          <h1>我们的纪念日</h1>
+          <span class="cupid">💘</span>
+        </div>
+        <div class="hearts">
+          <span class="heart">❤️</span>
+          <span class="heart">💖</span>
+          <span class="heart">💗</span>
+          <span class="heart">💓</span>
+          <span class="heart">💞</span>
+        </div>
       </div>
 
-      <!-- 未来憧憬卡片 -->
-      <div class="card accent-card blue future-card" @click="goToFuture">
-        <div class="cupid-corner cupid-corner-left">💙</div>
-        <div class="cupid-corner cupid-corner-right">🥰</div>
-        <h3>未来憧憬</h3>
-        <p>一起旅行、一起看雪、一起变老...</p>
-        <div class="click-hint">点击查看详情 💖</div>
+      <div class="card warm-card">
+        <div class="cupid-corner cupid-corner-left">🏹</div>
+        <div class="cupid-corner cupid-corner-right">💘</div>
+        <h2>在一起的时光</h2>
+        <div class="days-count">{{ daysTogether }} 天</div>
+        <p>从 {{ anniversaryDate.toLocaleDateString('zh-CN') }} 开始，我们已经一起走过了 {{ daysTogether }} 个美好的日子</p>
       </div>
-    </div>
 
-    <div class="quote">
-      <div class="cupid-quote">💘</div>
-      <p>"爱是恒久忍耐，又有恩慈；爱是不嫉妒，爱是不自夸，不张狂"</p>
-      <div class="cupid-quote">💘</div>
+      <div class="card accent-card yellow">
+        <div class="cupid-corner cupid-corner-left">💕</div>
+        <div class="cupid-corner cupid-corner-right">💖</div>
+        <h2>下一个纪念日</h2>
+        <div class="days-count">{{ daysToNext }} 天</div>
+        <p>距离下一个纪念日 ({{ nextAnniversary }}) 还有 {{ daysToNext }} 天</p>
+      </div>
+
+      <div class="memories">
+        <div class="card accent-card green memory-card" @click="goToMemories">
+          <div class="cupid-corner cupid-corner-left">💚</div>
+          <div class="cupid-corner cupid-corner-right">💝</div>
+          <h3>美好回忆</h3>
+          <p>一起看过的日落、一起走过的街道、一起吃过的美食...</p>
+          <div class="click-hint">点击查看详情 💖</div>
+        </div>
+
+        <div class="card accent-card blue future-card" @click="goToFuture">
+          <div class="cupid-corner cupid-corner-left">💙</div>
+          <div class="cupid-corner cupid-corner-right">🥰</div>
+          <h3>未来憧憬</h3>
+          <p>一起旅行、一起看雪、一起变老...</p>
+          <div class="click-hint">点击查看详情 💖</div>
+        </div>
+      </div>
+
+      <div class="quote">
+        <div class="cupid-quote">💘</div>
+        <p>"爱是恒久忍耐，又有恩慈；爱是不嫉妒，爱是不自夸，不张狂"</p>
+        <div class="cupid-quote">💘</div>
+      </div>
     </div>
 
     <div class="floating-hearts">
@@ -123,13 +114,22 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* 让背景全屏并居中内容 */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 如果想垂直居中改成 center */
+  background: linear-gradient(180deg, #fff5e6, #ffe6e6);
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
 .container {
   max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
   font-family: 'Arial', sans-serif;
   position: relative;
-  overflow: hidden;
 }
 
 .header {
@@ -215,7 +215,6 @@ onMounted(() => {
   margin-top: 2rem;
   padding: 1rem;
   border-top: 2px dashed #ffd6d6;
-  position: relative;
 }
 
 .cupid-corner {
@@ -262,47 +261,18 @@ onMounted(() => {
   animation: float 6s ease-in-out infinite;
   top: -10%;
 }
-  
-.floating-heart:nth-child(1) {
-  left: 10%;
-  animation-delay: 0s;
-}
 
-.floating-heart:nth-child(2) {
-  left: 20%;
-  animation-delay: 1s;
-}
-
-.floating-heart:nth-child(3) {
-  left: 30%;
-  animation-delay: 2s;
-}
-
-.floating-heart:nth-child(4) {
-  left: 70%;
-  animation-delay: 3s;
-}
-
-.floating-heart:nth-child(5) {
-  left: 80%;
-  animation-delay: 4s;
-}
+.floating-heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+.floating-heart:nth-child(2) { left: 20%; animation-delay: 1s; }
+.floating-heart:nth-child(3) { left: 30%; animation-delay: 2s; }
+.floating-heart:nth-child(4) { left: 70%; animation-delay: 3s; }
+.floating-heart:nth-child(5) { left: 80%; animation-delay: 4s; }
 
 @keyframes float {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(100vh) rotate(360deg);
-    opacity: 0;
-  }
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
 .click-hint {
@@ -313,24 +283,9 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-  }
-
-  .memories {
-    grid-template-columns: 1fr;
-  }
-
-  .cupid-header h1 {
-    font-size: 2rem;
-  }
-
-  .days-count {
-    font-size: 2rem;
-  }
-
-  .floating-hearts {
-    display: none;
-  }
+  .memories { grid-template-columns: 1fr; }
+  .cupid-header h1 { font-size: 2rem; }
+  .days-count { font-size: 2rem; }
+  .floating-hearts { display: none; }
 }
 </style>
