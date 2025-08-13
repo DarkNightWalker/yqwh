@@ -20,14 +20,14 @@ const title = computed(() => (props.type === 'memories' ? '美好回忆' : '未�
 const items = computed<Item[]>(() =>
   props.type === 'memories'
     ? [
-        { image: memories1, text: '那天约会，阳光刚刚好。' },
-        { image: memories2, text: '算命大师。' },
+        { image: memories1, text: '那天约会，阳光刚刚好' },
+        { image: memories2, text: '算命大师' },
         { image: memories3, text: '可爱的捏。' }
       ]
     : [
-        { image: future1, text: '想牵着你看一次极光漫天。' },
-        { image: future2, text: '一起把家装满喜欢的颜色。' },
-        { image: future3, text: '等白发苍苍，还一起到处跑。' }
+        { image: future1, text: '想牵着你看一次极光漫天' },
+        { image: future2, text: '一起把家装满喜欢的颜色' },
+        { image: future3, text: '等白发苍苍，还一起到处跑' }
       ]
 )
 
