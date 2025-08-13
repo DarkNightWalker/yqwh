@@ -22,7 +22,7 @@ const items = computed<Item[]>(() =>
     ? [
         { image: memories1, text: '那天约会，阳光刚刚好' },
         { image: memories2, text: '算命大师' },
-        { image: memories3, text: '可爱的捏。' }
+        { image: memories3, text: '可爱的捏' }
       ]
     : [
         { image: future1, text: '想牵着你看一次极光漫天' },
