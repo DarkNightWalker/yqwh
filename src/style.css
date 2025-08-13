@@ -1,29 +1,43 @@
 /* 全局 reset */
 html, body, #app {
   width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom, #fff9f9, #fff0f0);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.5;
-  color: #5a4a4a;
+  min-height: 100%;
   box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #fff9f9, #fff0f0);
+  overflow-x: hidden;
 }
 
 /* 页面容器 */
 .page {
-  min-height: 100vh; /* 保证至少和视口一样高 */
   display: flex;
-  justify-content: center;
-  align-items: flex-start; /* flex-start 避免垂直被压缩 */
-  padding: 2rem 1rem;    /* 内边距不会遮挡内容 */
+  flex-direction: column; /* 改为列布局，更适合手机 */
+  align-items: center;    /* 水平居中 */
+  justify-content: flex-start; /* 顶部开始，避免被遮挡 */
+  min-height: 100vh;
+  padding: 2rem 1rem;
   box-sizing: border-box;
-  position: relative;
 }
 
-/* 内部容器可自动撑开 */
+/* 内部容器 */
 .container {
   width: 100%;
   max-width: 800px;
+}
+
+/* 保证内容自适应 */
+.card, .header, .memories, .quote {
+  width: 100%;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .memories {
+    grid-template-columns: 1fr;
+  }
+  .days-count {
+    font-size: 2rem;
+  }
 }
