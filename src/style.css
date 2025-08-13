@@ -1,4 +1,3 @@
-/* 全局 reset */
 html, body, #app {
   width: 100%;
   margin: 0;
@@ -10,34 +9,27 @@ html, body, #app {
   overflow-x: hidden;
 }
 
-/* 页面容器 */
 .page {
   display: flex;
-  flex-direction: column; /* 改为列布局，更适合手机 */
-  align-items: center;    /* 水平居中 */
-  justify-content: flex-start; /* 顶部开始，避免被遮挡 */
+  flex-direction: column;        /* 列布局 */
+  align-items: center;           /* 水平居中 */
+  justify-content: flex-start;   /* 顶部开始 */
   min-height: 100vh;
   padding: 2rem 1rem;
   box-sizing: border-box;
+  overflow-y: auto;              /* 内容超出可滚动 */
 }
 
-/* 内部容器 */
 .container {
   width: 100%;
   max-width: 800px;
 }
 
-/* 保证内容自适应 */
-.card, .header, .memories, .quote {
-  width: 100%;
-}
+/* 底部浮动内容、动画、心形等保持原样 */
+.floating-hearts { pointer-events: none; }
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-  .memories {
-    grid-template-columns: 1fr;
-  }
-  .days-count {
-    font-size: 2rem;
-  }
+  .memories { grid-template-columns: 1fr; }
+  .days-count { font-size: 2rem; }
 }
